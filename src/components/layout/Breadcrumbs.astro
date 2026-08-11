@@ -1,0 +1,73 @@
+---
+import type { BreadcrumbItem } from "@/utils/seo";
+
+type Props = {
+  items: BreadcrumbItem[];
+};
+
+const { items } = Astro.props;
+---
+
+{
+  items.length > 1 && (
+    <nav class="breadcrumbs" aria-label="Путања странице">
+      <div class="container">
+        <ol class="breadcrumb-list plain-list">
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1;
+
+            return (
+              <li class="breadcrumb-item">
+                {isLast ? (
+                  <span aria-current="page">{item.name}</span>
+                ) : (
+                  <a href={item.href}>{item.name}</a>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </nav>
+  )
+}
+
+<style>
+  .breadcrumbs {
+    border-bottom: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.36);
+  }
+
+  .breadcrumb-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    padding: 14px 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--color-ink-muted);
+  }
+
+  .breadcrumb-item:not(:last-child)::after {
+    content: "/";
+    color: var(--color-club-blue);
+  }
+
+  .breadcrumb-item span[aria-current="page"] {
+    color: var(--color-ink);
+  }
+
+  .breadcrumb-item a:hover,
+  .breadcrumb-item a:focus-visible {
+    color: var(--color-club-blue);
+  }
+}</style>

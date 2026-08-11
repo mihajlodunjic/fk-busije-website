@@ -1,0 +1,33 @@
+---
+import { business } from "@/data/business";
+
+type Props = {
+  className?: string;
+};
+
+const { className = "" } = Astro.props;
+---
+
+<p class:list={["local-marker", className]}>{business.localMarker}</p>
+
+<style>
+  .local-marker {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.25;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.86);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    margin: 0;
+  }
+
+  @media (max-width: 767px) {
+    .local-marker {
+      writing-mode: horizontal-tb;
+      transform: none;
+      letter-spacing: 0.08em;
+    }
+  }
+</style>

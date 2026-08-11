@@ -1,0 +1,190 @@
+---
+import ClubCrest from "@/components/brand/ClubCrest.astro";
+import { business, currentYear } from "@/data/business";
+import { globalCopy } from "@/data/copy";
+import { navigationItems } from "@/data/navigation";
+import { publicSocialLinks } from "@/data/social";
+---
+
+<footer class="site-footer">
+  <div class="container footer-top">
+    <p class="footer-rule">{globalCopy.footerTopLine}</p>
+  </div>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <ClubCrest alt="Грб ФК Бусије" className="footer-crest" size={122} />
+      <div class="footer-brand-copy">
+        <h2>{business.shortName}</h2>
+        <p>{globalCopy.footerDescription}</p>
+      </div>
+    </div>
+
+    <div class="footer-column">
+      <h3>{globalCopy.footerSiteTitle}</h3>
+      <ul class="plain-list footer-links">
+        {
+          navigationItems.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h3>{globalCopy.footerContactTitle}</h3>
+      <ul class="plain-list footer-links">
+        <li>
+          <a href={business.contact.phoneHref}>{business.contact.phoneDisplay}</a>
+        </li>
+        <li>
+          <a href={business.contact.emailHref}>{business.contact.email}</a>
+        </li>
+        <li>
+          <address>{business.address.label}</address>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h3>{globalCopy.footerSocialTitle}</h3>
+      <ul class="plain-list footer-links">
+        {
+          publicSocialLinks.map((item) => (
+            <li>
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${item.label} (${globalCopy.externalLinkAriaLabel})`}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>{globalCopy.footerMatchNotice}</p>
+    <p>© {currentYear} Фудбалски клуб Бусије. Сва права задржана.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: 0 30px;
+    border-top: 4px solid var(--color-club-blue);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.08));
+  }
+
+  .footer-top {
+    padding-top: 22px;
+  }
+
+  .footer-rule {
+    margin: 0;
+    padding-top: 12px;
+    border-top: 1px solid rgba(11, 28, 45, 0.22);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.3fr repeat(3, minmax(0, 1fr));
+    gap: 32px 24px;
+    padding-block: 32px;
+  }
+
+  .footer-brand {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  :global(.footer-crest) {
+    width: 122px;
+  }
+
+  .footer-brand-copy {
+    display: grid;
+    gap: 12px;
+  }
+
+  .footer-brand-copy h2 {
+    font-size: 1.8rem;
+    line-height: 0.95;
+  }
+
+  .footer-brand-copy p,
+  .footer-bottom p {
+    max-width: 36ch;
+    color: var(--color-ink-muted);
+  }
+
+  .footer-column {
+    display: grid;
+    gap: 14px;
+  }
+
+  .footer-column h3 {
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-links {
+    display: grid;
+    gap: 10px;
+  }
+
+  .footer-links a,
+  .footer-links address {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-style: normal;
+  }
+
+  .footer-links a:hover,
+  .footer-links a:focus-visible {
+    color: var(--color-club-blue);
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(11, 28, 45, 0.12);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 1023px) {
+    .footer-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 767px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      padding-block: 24px;
+    }
+
+    .footer-brand {
+      grid-template-columns: auto 1fr;
+    }
+
+    :global(.footer-crest) {
+      width: 110px;
+    }
+  }
+</style>

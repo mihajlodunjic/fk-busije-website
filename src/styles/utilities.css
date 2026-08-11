@@ -1,0 +1,137 @@
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  width: min(calc(100% - (2 * clamp(18px, 4vw, 72px))), var(--content-max));
+  margin-inline: auto;
+}
+
+.section-shell {
+  padding-block: clamp(72px, 8vw, 120px);
+}
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+.button-primary,
+.button-secondary,
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  gap: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.button-primary,
+.button-secondary {
+  padding: 0 20px;
+  border: 2px solid transparent;
+}
+
+.button-primary {
+  background: var(--color-club-red);
+  color: var(--color-white);
+}
+
+.button-primary:hover,
+.button-primary:focus-visible {
+  background: var(--color-club-red-dark);
+}
+
+.button-secondary {
+  border-color: var(--color-club-blue);
+  color: var(--color-club-blue);
+  background: transparent;
+}
+
+.button-secondary:hover,
+.button-secondary:focus-visible {
+  background: var(--color-club-blue);
+  color: var(--color-white);
+}
+
+.button-link {
+  position: relative;
+  color: inherit;
+}
+
+.button-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform-origin: left center;
+  transform: scaleX(0.6);
+  transition: transform var(--transition-fast);
+}
+
+.button-link:hover::after,
+.button-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.surface-paper {
+  background: var(--color-paper);
+}
+
+.surface-red {
+  background: var(--color-club-red);
+  color: var(--color-white);
+}
+
+.surface-blue {
+  background: var(--color-club-blue);
+  color: var(--color-white);
+}
+
+[data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 360ms ease,
+    transform 360ms ease;
+}
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1023px) {
+  .grid-12 {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .container {
+    width: min(calc(100% - 36px), var(--content-max));
+  }
+
+  .grid-12 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,81 @@
+---
+import MatchResultsList from "@/components/matches/MatchResultsList.astro";
+import NextMatch from "@/components/matches/NextMatch.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { matchesPageCopy } from "@/data/copy";
+import { finishedMatches, upcomingMatches } from "@/data/matches";
+import { publicSocialLinks } from "@/data/social";
+import { sortFinished, sortUpcoming } from "@/utils/matches";
+
+const instagramUrl = publicSocialLinks.find((item) => item.primary)?.url ?? "/";
+const nextMatch = sortUpcoming(upcomingMatches)[0];
+const recentResults = sortFinished(finishedMatches);
+const breadcrumbs = [
+  { name: "Почетна", href: "/" },
+  { name: "Утакмице", href: "/utakmice/" }
+];
+---
+
+<BaseLayout
+  title={matchesPageCopy.seo.title}
+  description={matchesPageCopy.seo.description}
+  pathname="/utakmice/"
+  currentPath="/utakmice/"
+  breadcrumbItems={breadcrumbs}
+>
+  <section class="page-hero">
+    <div class="container page-hero-inner" data-reveal>
+      <p class="eyebrow">{matchesPageCopy.hero.metadata}</p>
+      <h1>{matchesPageCopy.hero.title}</h1>
+      <p class="lede">{matchesPageCopy.hero.intro}</p>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="container matches-page-grid" data-reveal>
+      <NextMatch match={nextMatch} copy={matchesPageCopy.nextMatch} fallbackUrl={instagramUrl} />
+    </div>
+  </section>
+
+  <section class="section-shell results-section">
+    <div class="container" data-reveal>
+      <MatchResultsList matches={recentResults} copy={matchesPageCopy.results} fallbackUrl={instagramUrl} />
+    </div>
+  </section>
+
+  <section class="section-shell venue-note surface-blue">
+    <div class="container note-inner" data-reveal>
+      <div class="section-header">
+        <p class="eyebrow">{matchesPageCopy.note.metadata}</p>
+        <h2>{matchesPageCopy.note.title}</h2>
+      </div>
+      <p class="body-large">{matchesPageCopy.note.body}</p>
+      <a
+        class="button-link note-link"
+        href={instagramUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${matchesPageCopy.note.cta} (Отвара се у новом прозору)`}
+      >
+        {matchesPageCopy.note.cta}
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero-inner,
+  .note-inner {
+    display: grid;
+    gap: 14px;
+  }
+
+  .results-section {
+    background: rgba(232, 227, 217, 0.42);
+  }
+
+  .note-link {
+    color: var(--color-white);
+    width: fit-content;
+  }
+</style>

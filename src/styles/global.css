@@ -1,0 +1,129 @@
+@import "./reset.css";
+@import "./tokens.css";
+@import "./typography.css";
+@import "./utilities.css";
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  background: var(--color-paper);
+}
+
+body {
+  min-width: 320px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+main {
+  display: block;
+}
+
+section {
+  position: relative;
+}
+
+a,
+button {
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 12px;
+  z-index: 1000;
+  background: var(--color-white);
+  color: var(--color-ink);
+  padding: 10px 14px;
+  border: 2px solid var(--color-club-blue);
+  transform: translateY(-140%);
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.page-hero {
+  padding-top: calc(var(--header-height) + 24px);
+}
+
+.section-header {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.double-line {
+  position: relative;
+  padding-top: 18px;
+}
+
+.double-line::before,
+.double-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.double-line::before {
+  width: 84px;
+  height: 4px;
+  background: var(--color-club-blue);
+}
+
+.double-line::after {
+  width: 84px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.75);
+  top: 7px;
+}
+
+.double-line.ink::after {
+  background: rgba(11, 28, 45, 0.22);
+}
+
+.double-line.ink::before {
+  background: var(--color-club-blue);
+}
+
+.page-shell {
+  overflow: clip;
+}
+
+.plain-list {
+  list-style: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

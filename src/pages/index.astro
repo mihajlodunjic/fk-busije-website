@@ -1,0 +1,631 @@
+---
+import BlueMark from "@/components/brand/BlueMark.astro";
+import ClubCrest from "@/components/brand/ClubCrest.astro";
+import LocalMarker from "@/components/brand/LocalMarker.astro";
+import ShieldDivider from "@/components/brand/ShieldDivider.astro";
+import MatchResultsList from "@/components/matches/MatchResultsList.astro";
+import NextMatch from "@/components/matches/NextMatch.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { business } from "@/data/business";
+import { historyPreview } from "@/data/history";
+import { homeCopy, matchesPageCopy } from "@/data/copy";
+import { finishedMatches, upcomingMatches } from "@/data/matches";
+import { publicSocialLinks } from "@/data/social";
+import { sortFinished, sortUpcoming } from "@/utils/matches";
+
+const instagramUrl = publicSocialLinks.find((item) => item.primary)?.url ?? "/";
+const nextMatch = sortUpcoming(upcomingMatches)[0];
+const recentResults = sortFinished(finishedMatches).slice(0, 4);
+---
+
+<BaseLayout
+  title={homeCopy.seo.title}
+  description={homeCopy.seo.description}
+  pathname="/"
+  currentPath="/"
+  breadcrumbItems={[{ name: "Почетна", href: "/" }]}
+>
+  <section class="home-hero surface-red">
+    <div class="container hero-grid">
+      <div class="hero-copy" data-reveal>
+        <p class="eyebrow hero-meta">{homeCopy.hero.metadata}</p>
+        <p class="hero-tag">{homeCopy.hero.marker}</p>
+        <h1>{homeCopy.hero.title}</h1>
+        <p class="lede hero-intro">{homeCopy.hero.intro}</p>
+        <div class="hero-actions">
+          <a class="button-secondary hero-primary-link" href="/klub/">
+            {homeCopy.hero.primaryCta}
+          </a>
+          <a
+            class="button-link hero-secondary-link"
+            href={instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${homeCopy.hero.secondaryCta} (Отвара се у новом прозору)`}
+          >
+            {homeCopy.hero.secondaryCta}
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-crest-wrap" data-reveal>
+        <BlueMark variant={1} className="hero-mark hero-mark-top" />
+        <BlueMark variant={3} className="hero-mark hero-mark-bottom" />
+        <ClubCrest className="hero-crest" loading="eager" size={560} />
+      </div>
+
+      <div class="hero-marker">
+        <LocalMarker />
+      </div>
+    </div>
+  </section>
+  <ShieldDivider />
+
+  <section class="section-shell identity-section">
+    <div class="container grid-12 identity-grid" data-reveal>
+      <div class="identity-meta">
+        <p class="eyebrow">{homeCopy.identity.metadata}</p>
+      </div>
+      <div class="identity-title double-line ink">
+        <h2>{homeCopy.identity.title}</h2>
+      </div>
+      <div class="identity-intro">
+        <p class="body-large">{homeCopy.identity.intro}</p>
+      </div>
+    </div>
+
+    <div class="container" data-reveal>
+      <ul class="plain-list identity-facts">
+        {
+          homeCopy.identity.facts.map((fact) => (
+            <li>
+              <p class="eyebrow">{fact.label}</p>
+              <p>{fact.value}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="button-link identity-cta" href="/klub/">
+        {homeCopy.identity.cta}
+      </a>
+    </div>
+  </section>
+
+  <section class="section-shell no-ground-section surface-blue">
+    <span class="background-letter" aria-hidden="true">
+      Б
+    </span>
+    <BlueMark variant={2} className="section-blue-mark" />
+    <div class="container grid-12 no-ground-grid" data-reveal>
+      <div class="no-ground-head">
+        <p class="eyebrow">{homeCopy.noGround.metadata}</p>
+        <h2>{homeCopy.noGround.title}</h2>
+      </div>
+      <div class="no-ground-body">
+        {homeCopy.noGround.body.map((paragraph) => <p>{paragraph}</p>)}
+        <a class="button-link no-ground-cta" href="/klub/">
+          {homeCopy.noGround.cta}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell championship-section">
+    <div class="container grid-12 championship-grid" data-reveal>
+      <div class="championship-year-wrap">
+        <BlueMark variant={1} className="championship-mark" />
+        <p class="championship-year mono">{homeCopy.championship.year}</p>
+      </div>
+      <div class="championship-copy">
+        <p class="eyebrow">{homeCopy.championship.metadata}</p>
+        <h2>{homeCopy.championship.title}</h2>
+        <p class="body-large">{homeCopy.championship.body}</p>
+        <p class="championship-detail">{homeCopy.championship.detail}</p>
+        <a class="button-link" href="/klub/#hronologija">
+          {homeCopy.championship.cta}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell matches-section">
+    <div class="container matches-header" data-reveal>
+      <div class="section-header double-line ink">
+        <p class="eyebrow">{homeCopy.matches.metadata}</p>
+        <h2>{homeCopy.matches.title}</h2>
+      </div>
+      <p class="body-large">{homeCopy.matches.intro}</p>
+    </div>
+
+    <div class="container matches-module" data-reveal>
+      <NextMatch match={nextMatch} copy={homeCopy.matches} fallbackUrl={instagramUrl} />
+      <MatchResultsList matches={recentResults} copy={matchesPageCopy.results} fallbackUrl={instagramUrl} />
+      <a class="button-link home-matches-link" href="/utakmice/">
+        {homeCopy.matches.cta}
+      </a>
+    </div>
+  </section>
+
+  <section class="section-shell timeline-section">
+    <div class="container grid-12 timeline-grid" data-reveal>
+      <div class="timeline-intro">
+        <p class="eyebrow">{homeCopy.timeline.metadata}</p>
+        <h2>{homeCopy.timeline.title}</h2>
+      </div>
+      <div class="timeline-list">
+        <ul class="plain-list">
+          {historyPreview.map((item) => (
+            <li class="timeline-row">
+              <p class="timeline-year mono">{item.year}</p>
+              <p class="timeline-text">{item.text}</p>
+            </li>
+          ))}
+        </ul>
+        <a class="button-link" href="/klub/">
+          {homeCopy.timeline.cta}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell contact-band surface-red">
+    <div class="container grid-12 contact-band-grid" data-reveal>
+      <div class="contact-band-copy">
+        <p class="eyebrow">{homeCopy.contactBand.metadata}</p>
+        <h2>{homeCopy.contactBand.title}</h2>
+        <p class="lede">{homeCopy.contactBand.intro}</p>
+      </div>
+      <div class="contact-band-actions">
+        <a
+          class="contact-band-link contact-band-link-strong"
+          href={instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${homeCopy.contactBand.ctas.instagram} (Отвара се у новом прозору)`}
+        >
+          {homeCopy.contactBand.ctas.instagram}
+        </a>
+        <a class="contact-band-link" href={business.contact.phoneHref}>
+          {homeCopy.contactBand.ctas.phone}
+        </a>
+        <a class="contact-band-link" href={business.contact.emailHref}>
+          {homeCopy.contactBand.ctas.email}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .home-hero {
+    position: relative;
+    overflow: clip;
+    padding-top: clamp(44px, 6vw, 72px);
+    padding-bottom: clamp(56px, 10vw, 108px);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr) minmax(42px, 1fr);
+    gap: 24px;
+    align-items: center;
+    min-height: min(78vh, 820px);
+  }
+
+  .hero-copy {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: 14px;
+    padding-right: 12px;
+  }
+
+  .hero-meta,
+  .hero-tag {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .hero-tag {
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .home-hero h1 {
+    max-width: 8.4ch;
+    color: var(--color-white);
+  }
+
+  .hero-intro {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 18px;
+    padding-top: 8px;
+  }
+
+  .hero-primary-link {
+    border-color: rgba(255, 255, 255, 0.92);
+    color: var(--color-white);
+  }
+
+  .hero-primary-link:hover,
+  .hero-primary-link:focus-visible {
+    background: var(--color-white);
+    color: var(--color-club-red);
+  }
+
+  .hero-secondary-link {
+    color: var(--color-white);
+  }
+
+  .hero-crest-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+  }
+
+  :global(.hero-crest) {
+    width: clamp(320px, 34vw, 560px);
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-mark {
+    position: absolute;
+    color: rgba(14, 84, 157, 0.95);
+  }
+
+  .hero-mark-top {
+    width: clamp(240px, 28vw, 420px);
+    top: 8%;
+    left: -8%;
+  }
+
+  .hero-mark-bottom {
+    width: clamp(220px, 24vw, 360px);
+    bottom: 8%;
+    right: -4%;
+  }
+
+  .hero-marker {
+    display: flex;
+    justify-content: flex-end;
+    align-self: stretch;
+    padding-block: 10px;
+  }
+
+  .identity-grid {
+    align-items: start;
+    margin-bottom: 36px;
+  }
+
+  .identity-meta {
+    grid-column: span 2;
+  }
+
+  .identity-title {
+    grid-column: span 5;
+  }
+
+  .identity-intro {
+    grid-column: span 5;
+  }
+
+  .identity-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 24px;
+    border-top: 2px solid var(--color-ink);
+  }
+
+  .identity-facts li {
+    display: grid;
+    gap: 8px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(11, 28, 45, 0.16);
+  }
+
+  .identity-facts p:last-child {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  .identity-cta {
+    margin-top: 20px;
+  }
+
+  .no-ground-section {
+    overflow: clip;
+  }
+
+  .no-ground-grid {
+    position: relative;
+    align-items: start;
+  }
+
+  .no-ground-head {
+    grid-column: span 5;
+    display: grid;
+    gap: 14px;
+  }
+
+  .no-ground-body {
+    grid-column: span 7;
+    display: grid;
+    gap: 18px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .no-ground-body p {
+    color: rgba(255, 255, 255, 0.94);
+  }
+
+  .background-letter {
+    position: absolute;
+    top: -22px;
+    right: clamp(12px, 8vw, 110px);
+    font-family: var(--font-heading);
+    font-size: clamp(14rem, 34vw, 26rem);
+    line-height: 0.82;
+    color: rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+  }
+
+  :global(.section-blue-mark) {
+    position: absolute;
+    width: clamp(260px, 28vw, 440px);
+    right: clamp(-30px, 2vw, 20px);
+    bottom: 32px;
+    color: rgba(255, 255, 255, 0.14);
+  }
+
+  .no-ground-cta {
+    color: var(--color-white);
+    width: fit-content;
+  }
+
+  .championship-grid {
+    align-items: center;
+  }
+
+  .championship-year-wrap {
+    grid-column: span 4;
+    position: relative;
+  }
+
+  .championship-year {
+    position: relative;
+    z-index: 2;
+    font-size: clamp(4rem, 10vw, 8rem);
+    line-height: 0.88;
+    letter-spacing: -0.06em;
+    color: var(--color-ink);
+  }
+
+  :global(.championship-mark) {
+    position: absolute;
+    width: clamp(220px, 24vw, 380px);
+    left: 0;
+    top: 46%;
+    transform: translateY(-50%);
+    color: rgba(14, 84, 157, 0.18);
+  }
+
+  .championship-copy {
+    grid-column: span 8;
+    display: grid;
+    gap: 16px;
+  }
+
+  .championship-detail {
+    font-weight: 700;
+  }
+
+  .matches-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: end;
+    margin-bottom: 36px;
+  }
+
+  .matches-module {
+    display: grid;
+    gap: 28px;
+  }
+
+  .home-matches-link {
+    justify-self: start;
+  }
+
+  .timeline-grid {
+    align-items: start;
+  }
+
+  .timeline-intro {
+    grid-column: span 4;
+    display: grid;
+    gap: 14px;
+  }
+
+  .timeline-list {
+    grid-column: span 8;
+    display: grid;
+    gap: 22px;
+  }
+
+  .timeline-row {
+    display: grid;
+    grid-template-columns: minmax(90px, 110px) minmax(0, 1fr);
+    gap: 18px;
+    padding: 18px 0;
+    border-top: 1px solid rgba(11, 28, 45, 0.16);
+  }
+
+  .timeline-row:last-child {
+    border-bottom: 1px solid rgba(11, 28, 45, 0.16);
+  }
+
+  .timeline-year {
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-club-blue);
+  }
+
+  .contact-band {
+    overflow: clip;
+  }
+
+  .contact-band-grid {
+    align-items: start;
+  }
+
+  .contact-band-copy {
+    grid-column: span 6;
+    display: grid;
+    gap: 14px;
+  }
+
+  .contact-band-copy h2,
+  .contact-band-copy p {
+    color: var(--color-white);
+  }
+
+  .contact-band-actions {
+    grid-column: span 6;
+    display: grid;
+    gap: 12px;
+    justify-items: start;
+  }
+
+  .contact-band-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 6px 0;
+    color: var(--color-white);
+    font-family: var(--font-heading);
+    font-size: clamp(1.2rem, 2.6vw, 1.8rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.32);
+  }
+
+  .contact-band-link-strong {
+    border-bottom-color: rgba(255, 255, 255, 0.88);
+  }
+
+  @media (max-width: 1023px) {
+    .hero-grid,
+    .identity-grid,
+    .no-ground-grid,
+    .championship-grid,
+    .timeline-grid,
+    .contact-band-grid {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+
+    .hero-grid {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      row-gap: 32px;
+    }
+
+    .hero-copy {
+      grid-column: 1 / span 5;
+    }
+
+    .hero-crest-wrap {
+      grid-column: 6 / -1;
+    }
+
+    .hero-marker {
+      grid-column: 1 / -1;
+      justify-content: flex-start;
+    }
+
+    .identity-meta,
+    .identity-title,
+    .identity-intro,
+    .no-ground-head,
+    .no-ground-body,
+    .championship-year-wrap,
+    .championship-copy,
+    .timeline-intro,
+    .timeline-list,
+    .contact-band-copy,
+    .contact-band-actions {
+      grid-column: 1 / -1;
+    }
+
+    .identity-facts {
+      grid-template-columns: 1fr;
+    }
+
+    .matches-header {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .home-hero {
+      padding-top: 34px;
+      padding-bottom: 64px;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .hero-copy,
+    .hero-crest-wrap,
+    .hero-marker {
+      grid-column: 1 / -1;
+    }
+
+    .home-hero h1 {
+      max-width: 9.6ch;
+    }
+
+    .hero-actions {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    :global(.hero-crest) {
+      width: min(54vw, 380px);
+    }
+
+    .hero-crest-wrap {
+      justify-content: center;
+    }
+
+    .background-letter {
+      display: none;
+    }
+
+    .championship-year {
+      font-size: clamp(3.4rem, 18vw, 5.4rem);
+    }
+
+    .timeline-row {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .contact-band-link {
+      font-size: 1.25rem;
+    }
+  }
+</style>

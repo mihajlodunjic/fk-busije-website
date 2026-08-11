@@ -1,0 +1,236 @@
+---
+import type { MatchRecord } from "@/data/matches";
+import { formatMatchDate } from "@/utils/dates";
+import { getResultTone } from "@/utils/matches";
+
+type Props = {
+  matches: MatchRecord[];
+  copy: {
+    title: string;
+    labels: Record<string, string>;
+    empty: {
+      title: string;
+      text: string;
+    };
+    cta: string;
+  };
+  fallbackUrl: string;
+};
+
+const { matches, copy, fallbackUrl } = Astro.props;
+
+function getStatusLabel(match: MatchRecord) {
+  if (match.status === "postponed") {
+    return copy.labels.postponed;
+  }
+
+  const tone = getResultTone(match);
+  if (tone === "win") {
+    return copy.labels.win;
+  }
+  if (tone === "loss") {
+    return copy.labels.loss;
+  }
+  if (tone === "draw") {
+    return copy.labels.draw;
+  }
+
+  return copy.labels.finished;
+}
+
+function getStatusClass(match: MatchRecord) {
+  if (match.status === "postponed") {
+    return "tone-draw";
+  }
+
+  const tone = getResultTone(match);
+  if (tone === "win") {
+    return "tone-win";
+  }
+  if (tone === "loss") {
+    return "tone-loss";
+  }
+  if (tone === "draw") {
+    return "tone-draw";
+  }
+
+  return "";
+}
+---
+
+<article class="results-shell">
+  <div class="results-head">
+    <h3>{copy.title}</h3>
+  </div>
+
+  {
+    matches.length > 0 ? (
+      <ul class="plain-list results-list">
+        {matches.map((match) => (
+          <li class="result-row">
+            <div class="result-main">
+              <p class="result-teams">
+                <span>{match.homeTeam}</span>
+                <span class="result-score">
+                  {match.score ? `${match.score.home}:${match.score.away}` : copy.labels.finished}
+                </span>
+                <span>{match.awayTeam}</span>
+              </p>
+              <p class="result-meta">
+                <time datetime={match.date}>{formatMatchDate(match.date)}</time>
+                {match.competition && <span>{match.competition}</span>}
+                {match.round && <span>{match.round}</span>}
+              </p>
+            </div>
+            <span class:list={["status-pill", getStatusClass(match)]}>{getStatusLabel(match)}</span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="results-empty">
+        <h4>{copy.empty.title}</h4>
+        <p>{copy.empty.text}</p>
+      </div>
+    )
+  }
+
+  <a
+    class="button-link results-follow"
+    href={fallbackUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={`${copy.cta} (Отвара се у новом прозору)`}
+  >
+    {copy.cta}
+  </a>
+</article>
+
+<style>
+  .results-shell {
+    display: grid;
+    gap: 20px;
+  }
+
+  .results-head h3 {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .results-list {
+    display: grid;
+    border-top: 2px solid var(--color-ink);
+  }
+
+  .result-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(11, 28, 45, 0.14);
+  }
+
+  .result-main {
+    display: grid;
+    gap: 8px;
+  }
+
+  .result-teams {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-heading);
+    font-size: clamp(1.15rem, 2vw, 1.8rem);
+    line-height: 1;
+  }
+
+  .result-teams span:first-child {
+    text-align: left;
+  }
+
+  .result-teams span:last-child {
+    text-align: right;
+  }
+
+  .result-score {
+    font-family: var(--font-mono);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: -0.04em;
+  }
+
+  .result-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    padding: 0 12px;
+    border-radius: var(--radius-soft);
+    background: rgba(11, 28, 45, 0.08);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .tone-win {
+    background: rgba(23, 107, 69, 0.12);
+    color: var(--color-win);
+  }
+
+  .tone-loss {
+    background: rgba(165, 40, 46, 0.12);
+    color: var(--color-loss);
+  }
+
+  .tone-draw {
+    background: rgba(93, 101, 112, 0.14);
+    color: var(--color-draw);
+  }
+
+  .results-empty {
+    display: grid;
+    gap: 12px;
+    padding: 24px 0;
+    border-top: 2px solid var(--color-ink);
+    border-bottom: 1px solid rgba(11, 28, 45, 0.14);
+  }
+
+  .results-empty h4 {
+    font-size: 1.5rem;
+  }
+
+  .results-follow {
+    justify-self: start;
+  }
+
+  @media (max-width: 767px) {
+    .result-row {
+      grid-template-columns: 1fr;
+    }
+
+    .result-teams {
+      grid-template-columns: 1fr;
+      justify-items: start;
+    }
+
+    .result-teams span:last-child,
+    .result-teams span:first-child {
+      text-align: left;
+    }
+
+    .status-pill {
+      justify-self: start;
+    }
+  }
+</style>

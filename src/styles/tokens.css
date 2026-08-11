@@ -1,0 +1,54 @@
+:root {
+  --color-club-red: #e91c26;
+  --color-club-red-dark: #be111a;
+  --color-club-blue: #0e549d;
+  --color-club-blue-dark: #083a70;
+  --color-paper: #f4f1ea;
+  --color-paper-muted: #e8e3d9;
+  --color-ink: #0b1c2d;
+  --color-ink-muted: #53606c;
+  --color-white: #ffffff;
+  --color-border: #c9d0d6;
+  --color-border-strong: #758493;
+  --color-win: #176b45;
+  --color-draw: #5d6570;
+  --color-loss: #a5282e;
+  --shadow-hard-blue: 6px 6px 0 var(--color-club-blue);
+  --page-max: 1440px;
+  --content-max: 1280px;
+  --text-max: 680px;
+  --intro-max: 560px;
+  --gutter: 24px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 96px;
+  --space-10: 144px;
+  --radius-soft: 4px;
+  --radius-media: 8px;
+  --header-height: 88px;
+  --focus-ring: 0 0 0 3px rgba(14, 84, 157, 0.22);
+  --transition-fast: 220ms ease;
+  --transition-base: 300ms ease;
+  --font-heading: "Roboto Condensed", "Arial Narrow", Arial, sans-serif;
+  --font-body: "PT Sans", Arial, sans-serif;
+  --font-mono: "Roboto Mono", Consolas, monospace;
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --gutter: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --gutter: 12px;
+    --header-height: 80px;
+  }
+}

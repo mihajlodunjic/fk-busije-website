@@ -1,0 +1,42 @@
+---
+import { business } from "@/data/business";
+
+type Props = {
+  alt?: string;
+  className?: string;
+  loading?: "eager" | "lazy";
+  size?: number;
+};
+
+const {
+  alt = business.crest.alt,
+  className = "",
+  loading = "lazy",
+  size = business.crest.width
+} = Astro.props;
+---
+
+<div class:list={["crest-frame", className]} style={`--crest-size:${size}px;`}>
+  <img
+    src={business.crest.src}
+    alt={alt}
+    width={business.crest.width}
+    height={business.crest.height}
+    loading={loading}
+    decoding="async"
+  />
+</div>
+
+<style>
+  .crest-frame {
+    width: var(--crest-size);
+    max-width: 100%;
+    flex: 0 0 auto;
+  }
+
+  .crest-frame img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+</style>

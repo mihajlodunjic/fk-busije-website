@@ -1,0 +1,276 @@
+---
+import BlueMark from "@/components/brand/BlueMark.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { clubPageCopy } from "@/data/copy";
+import { clubTimeline } from "@/data/history";
+import { publicSocialLinks } from "@/data/social";
+
+const instagramUrl = publicSocialLinks.find((item) => item.primary)?.url ?? "/";
+const breadcrumbs = [
+  { name: "Почетна", href: "/" },
+  { name: "Клуб", href: "/klub/" }
+];
+---
+
+<BaseLayout
+  title={clubPageCopy.seo.title}
+  description={clubPageCopy.seo.description}
+  pathname="/klub/"
+  currentPath="/klub/"
+  breadcrumbItems={breadcrumbs}
+>
+  <section class="club-hero page-hero">
+    <div class="container club-hero-inner" data-reveal>
+      <p class="eyebrow">{clubPageCopy.hero.metadata}</p>
+      <h1>{clubPageCopy.hero.title}</h1>
+      <p class="lede">{clubPageCopy.hero.intro}</p>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="container story-block" data-reveal>
+      <div class="section-header double-line ink">
+        <p class="eyebrow">{clubPageCopy.origin.metadata}</p>
+        <h2>{clubPageCopy.origin.title}</h2>
+      </div>
+      <div class="story-copy">
+        {clubPageCopy.origin.body.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell timeline-shell" id="hronologija">
+    <div class="container grid-12 timeline-layout" data-reveal>
+      <div class="timeline-header">
+        <p class="eyebrow">{clubPageCopy.leagues.metadata}</p>
+        <h2>{clubPageCopy.leagues.title}</h2>
+        <p class="body-large">{clubPageCopy.leagues.intro}</p>
+      </div>
+      <div class="timeline-records">
+        <ul class="plain-list">
+          {clubTimeline.map((item) => (
+            <li class="timeline-entry">
+              <p class="timeline-code mono">{item.year}</p>
+              <p>{item.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell championship-story">
+    <div class="container grid-12 championship-layout" data-reveal>
+      <div class="championship-header">
+        <p class="eyebrow">{clubPageCopy.championship.metadata}</p>
+        <h2>{clubPageCopy.championship.title}</h2>
+      </div>
+      <div class="championship-body">
+        <BlueMark variant={1} className="club-mark" />
+        {clubPageCopy.championship.body.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell no-ground-story surface-blue">
+    <div class="container grid-12 no-ground-layout" data-reveal>
+      <div class="section-header no-ground-header">
+        <p class="eyebrow">{clubPageCopy.noGround.metadata}</p>
+        <h2>{clubPageCopy.noGround.title}</h2>
+      </div>
+      <div class="story-copy light-copy">
+        {clubPageCopy.noGround.body.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell identity-story">
+    <div class="container grid-12 identity-layout" data-reveal>
+      <div class="section-header double-line ink identity-header">
+        <p class="eyebrow">{clubPageCopy.identity.metadata}</p>
+        <h2>{clubPageCopy.identity.title}</h2>
+      </div>
+      <div class="identity-text">
+        <p class="body-large">{clubPageCopy.identity.body}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell closing-band surface-red">
+    <div class="container grid-12 closing-grid" data-reveal>
+      <div class="closing-copy">
+        <h2>{clubPageCopy.cta.title}</h2>
+        <p>{clubPageCopy.cta.text}</p>
+      </div>
+      <div class="closing-actions">
+        <a class="button-secondary closing-primary" href="/utakmice/">
+          {clubPageCopy.cta.primary}
+        </a>
+        <a
+          class="button-link closing-secondary"
+          href={instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${clubPageCopy.cta.secondary} (Отвара се у новом прозору)`}
+        >
+          {clubPageCopy.cta.secondary}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .club-hero-inner {
+    display: grid;
+    gap: 14px;
+    padding-bottom: 24px;
+  }
+
+  .club-hero h1 {
+    max-width: 10ch;
+  }
+
+  .story-block {
+    display: grid;
+    gap: 24px;
+  }
+
+  .story-copy {
+    display: grid;
+    gap: 18px;
+  }
+
+  .timeline-shell {
+    background: rgba(232, 227, 217, 0.46);
+  }
+
+  .timeline-layout {
+    align-items: start;
+  }
+
+  .timeline-header {
+    grid-column: span 4;
+    display: grid;
+    gap: 16px;
+  }
+
+  .timeline-records {
+    grid-column: span 8;
+  }
+
+  .timeline-entry {
+    display: grid;
+    grid-template-columns: minmax(100px, 120px) minmax(0, 1fr);
+    gap: 20px;
+    padding: 18px 0;
+    border-top: 1px solid rgba(11, 28, 45, 0.16);
+  }
+
+  .timeline-entry:last-child {
+    border-bottom: 1px solid rgba(11, 28, 45, 0.16);
+  }
+
+  .timeline-code {
+    font-size: 0.86rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-club-blue);
+  }
+
+  .championship-layout,
+  .no-ground-layout,
+  .identity-layout,
+  .closing-grid {
+    align-items: start;
+  }
+
+  .championship-header,
+  .no-ground-header,
+  .identity-header,
+  .closing-copy {
+    grid-column: span 5;
+  }
+
+  .championship-body,
+  .identity-text,
+  .closing-actions {
+    grid-column: span 7;
+  }
+
+  .championship-body {
+    position: relative;
+    display: grid;
+    gap: 18px;
+  }
+
+  :global(.club-mark) {
+    position: absolute;
+    width: clamp(220px, 24vw, 360px);
+    top: -22px;
+    right: 0;
+    color: rgba(14, 84, 157, 0.12);
+  }
+
+  .light-copy p,
+  .closing-copy h2,
+  .closing-copy p {
+    color: var(--color-white);
+  }
+
+  .closing-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 18px;
+  }
+
+  .closing-primary {
+    border-color: rgba(255, 255, 255, 0.92);
+    color: var(--color-white);
+  }
+
+  .closing-primary:hover,
+  .closing-primary:focus-visible {
+    background: var(--color-white);
+    color: var(--color-club-red);
+  }
+
+  .closing-secondary {
+    color: var(--color-white);
+  }
+
+  @media (max-width: 1023px) {
+    .timeline-layout,
+    .championship-layout,
+    .no-ground-layout,
+    .identity-layout,
+    .closing-grid {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+
+    .timeline-header,
+    .timeline-records,
+    .championship-header,
+    .championship-body,
+    .no-ground-header,
+    .identity-header,
+    .identity-text,
+    .closing-copy,
+    .closing-actions {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .timeline-entry {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .closing-actions {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

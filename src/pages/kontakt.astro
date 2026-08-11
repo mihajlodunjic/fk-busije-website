@@ -1,0 +1,206 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { business } from "@/data/business";
+import { contactPageCopy, globalCopy } from "@/data/copy";
+import { publicSocialLinks } from "@/data/social";
+
+const breadcrumbs = [
+  { name: "Почетна", href: "/" },
+  { name: "Контакт", href: "/kontakt/" }
+];
+
+const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address.label)}`;
+const instagram = publicSocialLinks.find((item) => item.id === "instagram");
+const facebook = publicSocialLinks.find((item) => item.id === "facebook");
+const externalLabel = globalCopy.externalLinkAriaLabel;
+---
+
+<BaseLayout
+  title={contactPageCopy.seo.title}
+  description={contactPageCopy.seo.description}
+  pathname="/kontakt/"
+  currentPath="/kontakt/"
+  breadcrumbItems={breadcrumbs}
+>
+  <section class="page-hero">
+    <div class="container page-hero-inner" data-reveal>
+      <p class="eyebrow">{contactPageCopy.hero.metadata}</p>
+      <h1>{contactPageCopy.hero.title}</h1>
+      <p class="lede">{contactPageCopy.hero.intro}</p>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="container grid-12 contact-grid" data-reveal>
+      <div class="contact-block">
+        <div class="section-header double-line ink">
+          <h2>{contactPageCopy.direct.title}</h2>
+        </div>
+        <div class="contact-rows">
+          <div class="contact-row">
+            <p class="eyebrow">{contactPageCopy.direct.phoneLabel}</p>
+            <a class="contact-value" href={business.contact.phoneHref}>
+              {business.contact.phoneDisplay}
+            </a>
+            <a class="button-link" href={business.contact.phoneHref}>
+              {contactPageCopy.direct.phoneCta}
+            </a>
+          </div>
+
+          <div class="contact-row">
+            <p class="eyebrow">{contactPageCopy.direct.emailLabel}</p>
+            <a class="contact-value contact-value-email" href={business.contact.emailHref}>
+              {business.contact.email}
+            </a>
+            <a class="button-link" href={business.contact.emailHref}>
+              {contactPageCopy.direct.emailCta}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-block">
+        <div class="section-header double-line ink">
+          <h2>{contactPageCopy.address.title}</h2>
+        </div>
+        <address class="contact-address">{business.address.label}</address>
+        <p>{contactPageCopy.address.note}</p>
+        <a
+          class="button-link"
+          href={mapUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${contactPageCopy.address.cta} (${externalLabel})`}
+        >
+          {contactPageCopy.address.cta}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell social-section surface-red">
+    <div class="container grid-12 social-grid" data-reveal>
+      <div class="social-copy">
+        <p class="eyebrow">ПРАТИТЕ ФК БУСИЈЕ</p>
+        <h2>{contactPageCopy.social.title}</h2>
+        <p class="lede">{contactPageCopy.social.intro}</p>
+      </div>
+      <div class="social-links">
+        {instagram && (
+          <a
+            class="social-link"
+            href={instagram.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Инстаграм — ${instagram.handle} (${externalLabel})`}
+          >
+            Инстаграм — {instagram.handle}
+          </a>
+        )}
+        {facebook && (
+          <a
+            class="social-link"
+            href={facebook.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${contactPageCopy.social.facebookText} (${externalLabel})`}
+          >
+            {contactPageCopy.social.facebookText}
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero-inner {
+    display: grid;
+    gap: 14px;
+  }
+
+  .contact-grid,
+  .social-grid {
+    align-items: start;
+  }
+
+  .contact-block,
+  .social-copy,
+  .social-links {
+    grid-column: span 6;
+  }
+
+  .contact-block {
+    display: grid;
+    gap: 22px;
+  }
+
+  .contact-rows {
+    display: grid;
+    gap: 18px;
+  }
+
+  .contact-row {
+    display: grid;
+    gap: 10px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(11, 28, 45, 0.16);
+  }
+
+  .contact-value {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    min-height: 44px;
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .contact-value-email {
+    overflow-wrap: anywhere;
+  }
+
+  .contact-address {
+    font-style: normal;
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+    line-height: 1;
+  }
+
+  .social-copy h2,
+  .social-copy p {
+    color: var(--color-white);
+  }
+
+  .social-links {
+    display: grid;
+    gap: 14px;
+  }
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    width: fit-content;
+    color: var(--color-white);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.34);
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+    line-height: 1;
+  }
+
+  @media (max-width: 1023px) {
+    .contact-grid,
+    .social-grid {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+
+    .contact-block,
+    .social-copy,
+    .social-links {
+      grid-column: 1 / -1;
+    }
+  }
+</style>
