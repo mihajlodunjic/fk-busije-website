@@ -25,23 +25,33 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
   currentPath="/"
   breadcrumbItems={[{ name: "Почетна", href: "/" }]}
 >
+  <script is:inline>
+    document.documentElement.classList.add("hero-motion");
+  </script>
+
   <section class="home-hero">
     <div class="home-hero-layout">
       <div class="hero-red-pane">
-        <BlueMark variant={1} className="hero-mark hero-mark-top" />
-        <BlueMark variant={3} className="hero-mark hero-mark-bottom" />
+        <div class="hero-mark-shell hero-mark-top" aria-hidden="true">
+          <BlueMark variant={1} />
+        </div>
+        <div class="hero-mark-shell hero-mark-bottom" aria-hidden="true">
+          <BlueMark variant={3} />
+        </div>
         <div class="hero-red-inner">
-          <div class="hero-copy" data-reveal>
-            <p class="eyebrow hero-meta">{homeCopy.hero.metadata}</p>
-            <p class="hero-tag">{homeCopy.hero.marker}</p>
-            <h1>{homeCopy.hero.title}</h1>
-            <p class="lede hero-intro">{homeCopy.hero.intro}</p>
+          <div class="hero-copy">
+            <div class="hero-copy-top">
+              <p class="eyebrow hero-meta hero-animate hero-animate-meta">{homeCopy.hero.metadata}</p>
+              <p class="hero-tag hero-animate hero-animate-tag">{homeCopy.hero.marker}</p>
+            </div>
+            <h1 class="hero-animate hero-animate-title">{homeCopy.hero.title}</h1>
+            <p class="lede hero-intro hero-animate hero-animate-intro">{homeCopy.hero.intro}</p>
             <div class="hero-actions">
-              <a class="button-secondary hero-primary-link" href="/klub/">
+              <a class="button-secondary hero-primary-link hero-action hero-animate hero-animate-action-primary" href="/klub/">
                 {homeCopy.hero.primaryCta}
               </a>
               <a
-                class="button-link hero-secondary-link"
+                class="button-link hero-secondary-link hero-action hero-animate hero-animate-action-secondary"
                 href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -52,13 +62,15 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
             </div>
           </div>
 
-          <div class="hero-marker" data-reveal>
-            <LocalMarker />
+          <div class="hero-marker">
+            <div class="hero-marker-reveal">
+              <LocalMarker className="hero-local-marker" />
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="hero-crest-pane" data-reveal>
+      <div class="hero-crest-pane">
         <div class="hero-crest-wrap">
           <ClubCrest className="hero-crest" loading="eager" size={596} />
         </div>
@@ -203,22 +215,40 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
 
 <style>
   .home-hero {
+    --hero-header-offset: 104px;
     position: relative;
-    overflow-x: clip;
+    overflow: clip;
     background: var(--color-paper);
+    height: min(760px, calc(100vh - var(--hero-header-offset)));
+    height: min(760px, calc(100svh - var(--hero-header-offset)));
+    min-height: 0;
+    max-height: 760px;
+    isolation: isolate;
+  }
+
+  @supports (height: 100dvh) {
+    .home-hero {
+      height: min(760px, calc(100dvh - var(--hero-header-offset)));
+    }
   }
 
   .home-hero-layout {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1.72fr) minmax(320px, 0.96fr);
+    grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
     align-items: stretch;
-    min-height: clamp(560px, 74vh, 780px);
+    height: 100%;
+  }
+
+  .hero-red-pane,
+  .hero-crest-pane {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .hero-red-pane {
-    position: relative;
     background: var(--color-hero-red);
-    overflow: clip;
   }
 
   .hero-red-inner {
@@ -226,36 +256,51 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
     z-index: 2;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 24px;
     align-items: center;
-    min-height: 100%;
+    gap: clamp(16px, 2vw, 28px);
+    height: 100%;
     padding:
-      clamp(52px, 8vw, 90px)
-      clamp(18px, 4vw, 72px)
-      clamp(56px, 9vw, 96px);
+      clamp(24px, 4svh, 40px)
+      clamp(18px, 4.5vw, 64px)
+      clamp(22px, 4svh, 38px);
   }
 
   .hero-crest-pane {
-    position: relative;
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
     background: var(--color-paper);
-    border-left: 6px solid var(--color-club-blue);
+  }
+
+  .hero-crest-pane::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: var(--color-club-blue);
+    z-index: 3;
+    transform-origin: center top;
   }
 
   .hero-copy {
     position: relative;
-    z-index: 3;
+    z-index: 4;
     display: grid;
-    gap: 14px;
+    align-content: center;
+    gap: clamp(8px, 1.2svh, 14px);
     align-self: center;
-    max-width: min(100%, 720px);
+    max-width: min(100%, 33rem);
+  }
+
+  .hero-copy-top {
+    display: grid;
+    gap: 8px;
   }
 
   .hero-meta,
   .hero-tag {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.82);
+    max-width: none;
   }
 
   .hero-tag {
@@ -266,20 +311,30 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
   }
 
   .home-hero h1 {
-    max-width: 8.4ch;
+    max-width: 7.3ch;
     color: var(--color-white);
+    font-size: clamp(3.05rem, 5.5vw, 5.5rem);
+    line-height: 0.88;
+    letter-spacing: -0.035em;
   }
 
   .hero-intro {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.94);
+    font-size: clamp(1rem, 1.2vw + 0.5rem, 1.28rem);
+    line-height: 1.45;
+    max-width: 30rem;
   }
 
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 14px 18px;
-    padding-top: 8px;
+    gap: 12px 18px;
+    padding-top: 6px;
+  }
+
+  .hero-action {
+    width: fit-content;
   }
 
   .hero-primary-link {
@@ -299,51 +354,247 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
 
   .hero-crest-wrap {
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100%;
-    width: 100%;
-    overflow: visible;
-    padding:
-      clamp(42px, 7vw, 88px)
-      clamp(24px, 3.8vw, 54px);
     z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding:
+      clamp(28px, 4svh, 56px)
+      clamp(18px, 3.6vw, 48px);
   }
 
   :global(.hero-crest) {
-    --crest-size: clamp(420px, 33vw, 596px) !important;
+    --crest-size: clamp(300px, 30vw, 440px) !important;
     width: var(--crest-size);
-    max-width: min(100%, 596px);
+    max-width: min(100%, 440px);
     position: relative;
     z-index: 2;
     margin-inline: auto;
   }
 
-  .hero-mark {
+  .hero-mark-shell {
     position: absolute;
     z-index: 1;
-    color: rgba(14, 84, 157, 0.78);
+    aspect-ratio: 46 / 11;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-mark-shell :global(.blue-mark) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: rgba(14, 84, 157, 0.88);
+    opacity: 0.92;
   }
 
   .hero-mark-top {
-    width: clamp(240px, 26vw, 380px);
-    top: 8%;
-    right: 6%;
+    top: clamp(22px, 7%, 52px);
+    right: clamp(16px, 6%, 62px);
+    width: clamp(150px, 17vw, 250px);
   }
 
   .hero-mark-bottom {
-    width: clamp(220px, 24vw, 330px);
-    bottom: 8%;
-    right: -5%;
+    right: clamp(18px, 5%, 56px);
+    bottom: clamp(24px, 10%, 64px);
+    width: clamp(112px, 12vw, 190px);
   }
 
   .hero-marker {
+    position: relative;
+    z-index: 4;
     display: flex;
+    align-items: flex-end;
     justify-content: flex-end;
-    align-self: stretch;
-    padding-block: 10px;
-    z-index: 3;
+    height: 100%;
+    padding-block: 6px;
+  }
+
+  .hero-marker-reveal {
+    overflow: hidden;
+  }
+
+  :global(.hero-local-marker) {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.74);
+  }
+
+  html.hero-motion .hero-red-pane {
+    clip-path: inset(0 100% 0 0);
+    animation: hero-panel-left 360ms cubic-bezier(0.24, 0.84, 0.32, 1) forwards;
+  }
+
+  html.hero-motion .hero-crest-pane {
+    clip-path: inset(0 0 0 100%);
+    animation: hero-panel-right 400ms cubic-bezier(0.22, 0.86, 0.24, 1) 40ms forwards;
+  }
+
+  html.hero-motion .hero-crest-pane::before {
+    transform: scaleY(0);
+    animation: hero-divider-vertical 220ms cubic-bezier(0.2, 0.8, 0.2, 1) 240ms forwards;
+  }
+
+  html.hero-motion .hero-mark-shell {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  html.hero-motion .hero-mark-top {
+    animation: hero-mark-swipe 220ms cubic-bezier(0.2, 0.8, 0.2, 1) 230ms forwards;
+  }
+
+  html.hero-motion .hero-mark-bottom {
+    animation: hero-mark-swipe 220ms cubic-bezier(0.2, 0.8, 0.2, 1) 310ms forwards;
+  }
+
+  html.hero-motion .hero-animate {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translate3d(0, 18px, 0);
+    animation: hero-text-wipe 360ms cubic-bezier(0.2, 0.82, 0.25, 1) forwards;
+  }
+
+  html.hero-motion .hero-animate-meta {
+    animation-delay: 160ms;
+  }
+
+  html.hero-motion .hero-animate-tag {
+    animation-delay: 210ms;
+  }
+
+  html.hero-motion .hero-animate-title {
+    animation-delay: 240ms;
+    animation-duration: 380ms;
+  }
+
+  html.hero-motion .hero-animate-intro {
+    animation-delay: 320ms;
+  }
+
+  html.hero-motion .hero-animate-action-primary {
+    animation-delay: 420ms;
+  }
+
+  html.hero-motion .hero-animate-action-secondary {
+    animation-delay: 500ms;
+  }
+
+  html.hero-motion :global(.hero-crest) {
+    opacity: 0;
+    transform: translate3d(18px, 0, 0) scale(0.88);
+    animation: hero-crest-in 460ms cubic-bezier(0.16, 1, 0.3, 1) 220ms forwards;
+  }
+
+  html.hero-motion .hero-marker-reveal {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    animation: hero-marker-wipe 220ms linear 640ms forwards;
+  }
+
+  @keyframes hero-panel-left {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes hero-panel-right {
+    from {
+      clip-path: inset(0 0 0 100%);
+    }
+
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes hero-divider-vertical {
+    from {
+      transform: scaleY(0);
+    }
+
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes hero-divider-horizontal {
+    from {
+      transform: scaleX(0);
+    }
+
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes hero-mark-swipe {
+    from {
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+    }
+
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes hero-text-wipe {
+    from {
+      opacity: 0;
+      clip-path: inset(0 0 100% 0);
+      transform: translate3d(0, 18px, 0);
+    }
+
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes hero-crest-in {
+    from {
+      opacity: 0;
+      transform: translate3d(18px, 0, 0) scale(0.88);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  @keyframes hero-marker-wipe {
+    from {
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+    }
+
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.hero-motion .home-hero *,
+    html.hero-motion .home-hero *::before,
+    html.hero-motion .home-hero *::after {
+      animation: none !important;
+      clip-path: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
   }
 
   .identity-grid {
@@ -593,23 +844,35 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
     }
 
     .home-hero-layout {
-      grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.95fr);
-      min-height: clamp(520px, 70vh, 700px);
-    }
-
-    :global(.hero-crest) {
-      --crest-size: clamp(320px, 32vw, 460px) !important;
-      width: var(--crest-size);
-      max-width: min(100%, 460px);
+      grid-template-columns: minmax(0, 1.08fr) minmax(260px, 0.76fr);
     }
 
     .hero-red-inner {
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 18px;
       padding:
-        clamp(46px, 6vw, 72px)
-        clamp(28px, 4vw, 44px)
-        clamp(48px, 7vw, 72px);
+        clamp(22px, 3.8svh, 34px)
+        clamp(22px, 4vw, 40px)
+        clamp(20px, 3.6svh, 32px);
+    }
+
+    .home-hero h1 {
+      font-size: clamp(2.9rem, 5.6vw, 4.8rem);
+    }
+
+    .hero-intro {
+      max-width: 28rem;
+    }
+
+    :global(.hero-crest) {
+      --crest-size: clamp(260px, 30vw, 360px) !important;
+      max-width: min(100%, 360px);
+    }
+
+    .hero-mark-top {
+      width: clamp(132px, 15vw, 210px);
+    }
+
+    .hero-mark-bottom {
+      width: clamp(100px, 11vw, 160px);
     }
 
     .identity-meta,
@@ -636,61 +899,99 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
   }
 
   @media (max-width: 767px) {
+    .home-hero {
+      height: min(660px, calc(100vh - var(--hero-header-offset)));
+      height: min(660px, calc(100svh - var(--hero-header-offset)));
+      max-height: 660px;
+    }
+
+    @supports (height: 100dvh) {
+      .home-hero {
+        height: min(660px, calc(100dvh - var(--hero-header-offset)));
+      }
+    }
+
     .home-hero-layout {
       grid-template-columns: 1fr;
-      min-height: auto;
+      grid-template-rows: minmax(0, 1fr) clamp(148px, 28svh, 210px);
     }
 
     .hero-red-inner {
       grid-template-columns: 1fr;
-      gap: 22px;
+      align-content: center;
+      gap: 14px;
       padding:
-        36px
+        20px
         18px
-        34px;
+        16px;
     }
 
     .home-hero h1 {
-      max-width: 9.6ch;
+      max-width: 7.4ch;
+      font-size: clamp(2.45rem, 12vw, 4rem);
+    }
+
+    .hero-copy {
+      max-width: none;
+      gap: 10px;
+    }
+
+    .hero-copy-top {
+      gap: 6px;
+    }
+
+    .hero-intro {
+      max-width: none;
+      font-size: 0.98rem;
+      line-height: 1.42;
     }
 
     .hero-actions {
       align-items: flex-start;
-      flex-direction: column;
+      gap: 10px 16px;
+      padding-top: 4px;
     }
 
     :global(.hero-crest) {
-      --crest-size: min(84vw, 320px) !important;
-      width: var(--crest-size);
-      max-width: 100%;
+      --crest-size: min(58vw, 228px) !important;
+      max-width: 228px;
     }
 
-    .hero-crest-pane {
-      border-left: 0;
-      border-top: 6px solid var(--color-club-blue);
+    .hero-crest-pane::before {
+      inset: 0 0 auto 0;
+      width: auto;
+      height: 4px;
+      transform-origin: left center;
+    }
+
+    html.hero-motion .hero-crest-pane::before {
+      transform: scaleX(0);
+      animation: hero-divider-horizontal 220ms cubic-bezier(0.2, 0.8, 0.2, 1) 240ms forwards;
     }
 
     .hero-crest-wrap {
       width: 100%;
-      max-width: 352px;
-      margin-inline: auto;
-      min-height: clamp(280px, 36vh, 360px);
       padding:
-        28px
-        22px
-        30px;
+        18px
+        18px
+        14px;
     }
 
     .hero-marker {
       justify-content: flex-start;
-      padding-block: 0;
+      height: auto;
+      padding-block: 0 2px;
+    }
+
+    :global(.hero-local-marker) {
+      font-size: 0.66rem;
+      letter-spacing: 0.08em;
     }
 
     .hero-mark-top {
-      width: 220px;
-      top: 16px;
-      right: -36px;
-      opacity: 0.45;
+      width: min(164px, 40vw);
+      top: 12px;
+      right: 14px;
     }
 
     .hero-mark-bottom {
@@ -716,6 +1017,135 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
 
     .contact-band-link {
       font-size: 1.25rem;
+    }
+  }
+
+  @media (min-width: 768px) and (max-height: 820px) {
+    .hero-red-inner {
+      padding-block: 22px;
+    }
+
+    .home-hero h1 {
+      font-size: clamp(2.9rem, 4.8vw, 4.75rem);
+      max-width: 7ch;
+    }
+
+    .hero-intro {
+      font-size: 1rem;
+      max-width: 28rem;
+    }
+
+    :global(.hero-crest) {
+      --crest-size: clamp(280px, 25vw, 360px) !important;
+      max-width: min(100%, 360px);
+    }
+
+    .hero-mark-top {
+      width: clamp(126px, 14vw, 200px);
+    }
+
+    .hero-mark-bottom {
+      width: clamp(96px, 10vw, 150px);
+      bottom: clamp(18px, 8%, 46px);
+    }
+  }
+
+  @media (max-width: 767px) and (max-height: 700px) {
+    .home-hero {
+      height: min(560px, calc(100vh - var(--hero-header-offset)));
+      height: min(560px, calc(100svh - var(--hero-header-offset)));
+      max-height: 560px;
+    }
+
+    @supports (height: 100dvh) {
+      .home-hero {
+        height: min(560px, calc(100dvh - var(--hero-header-offset)));
+      }
+    }
+
+    .home-hero-layout {
+      grid-template-rows: minmax(0, 1fr) clamp(140px, 26svh, 182px);
+    }
+
+    .hero-red-inner {
+      gap: 12px;
+      padding:
+        16px
+        16px
+        12px;
+    }
+
+    .hero-copy {
+      gap: 8px;
+    }
+
+    .home-hero h1 {
+      font-size: clamp(2.1rem, 10.8vw, 3.25rem);
+    }
+
+    .hero-intro {
+      font-size: 0.93rem;
+      line-height: 1.35;
+    }
+
+    .hero-actions {
+      gap: 8px 14px;
+    }
+
+    .hero-crest-wrap {
+      padding:
+        12px
+        14px
+        10px;
+    }
+
+    :global(.hero-crest) {
+      --crest-size: min(50vw, 188px) !important;
+      max-width: 188px;
+    }
+
+    .hero-mark-top {
+      width: min(132px, 36vw);
+    }
+  }
+
+  @media (max-width: 380px) {
+    .home-hero-layout {
+      grid-template-rows: minmax(0, 1fr) clamp(96px, 19svh, 126px);
+    }
+
+    .hero-red-inner {
+      gap: 12px;
+      padding:
+        18px
+        16px
+        12px;
+    }
+
+    .home-hero h1 {
+      max-width: 7.1ch;
+      font-size: clamp(2.15rem, 10.9vw, 3.45rem);
+    }
+
+    .hero-intro {
+      font-size: 0.92rem;
+      line-height: 1.34;
+    }
+
+    .hero-actions {
+      gap: 8px 12px;
+    }
+
+    :global(.hero-crest) {
+      --crest-size: min(38vw, 136px) !important;
+      max-width: 136px;
+    }
+
+    .hero-crest-wrap {
+      padding:
+        8px
+        10px
+        6px;
     }
   }
 </style>
