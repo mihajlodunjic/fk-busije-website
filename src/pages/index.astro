@@ -11,6 +11,7 @@ import { historyPreview } from "@/data/history";
 import { homeCopy, matchesPageCopy } from "@/data/copy";
 import { finishedMatches, upcomingMatches } from "@/data/matches";
 import { publicSocialLinks } from "@/data/social";
+import { getSiteLinkAttrs } from "@/utils/siteLinks";
 import { sortFinished, sortUpcoming } from "@/utils/matches";
 
 const instagramUrl = publicSocialLinks.find((item) => item.primary)?.url ?? "/";
@@ -47,7 +48,10 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
             <h1 class="hero-animate hero-animate-title">{homeCopy.hero.title}</h1>
             <p class="lede hero-intro hero-animate hero-animate-intro">{homeCopy.hero.intro}</p>
             <div class="hero-actions">
-              <a class="button-secondary hero-primary-link hero-action hero-animate hero-animate-action-primary" href="/klub/">
+              <a
+                class="button-secondary hero-primary-link hero-action hero-animate hero-animate-action-primary"
+                {...getSiteLinkAttrs("/klub/")}
+              >
                 {homeCopy.hero.primaryCta}
               </a>
               <a
@@ -103,7 +107,7 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
           ))
         }
       </ul>
-      <a class="button-link identity-cta" href="/klub/">
+      <a class="button-link identity-cta" {...getSiteLinkAttrs("/klub/")}>
         {homeCopy.identity.cta}
       </a>
     </div>
@@ -121,7 +125,7 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
       </div>
       <div class="no-ground-body">
         {homeCopy.noGround.body.map((paragraph) => <p>{paragraph}</p>)}
-        <a class="button-link no-ground-cta" href="/klub/">
+        <a class="button-link no-ground-cta" {...getSiteLinkAttrs("/klub/")}>
           {homeCopy.noGround.cta}
         </a>
       </div>
@@ -138,7 +142,7 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
         <h2>{homeCopy.championship.title}</h2>
         <p class="body-large">{homeCopy.championship.body}</p>
         <p class="championship-detail">{homeCopy.championship.detail}</p>
-        <a class="button-link" href="/klub/#hronologija">
+        <a class="button-link" {...getSiteLinkAttrs("/klub/#hronologija")}>
           {homeCopy.championship.cta}
         </a>
       </div>
@@ -157,7 +161,7 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
     <div class="container matches-module" data-reveal>
       <NextMatch match={nextMatch} copy={homeCopy.matches} fallbackUrl={instagramUrl} />
       <MatchResultsList matches={recentResults} copy={matchesPageCopy.results} fallbackUrl={instagramUrl} />
-      <a class="button-link home-matches-link" href="/utakmice/">
+      <a class="button-link home-matches-link" {...getSiteLinkAttrs("/utakmice/")}>
         {homeCopy.matches.cta}
       </a>
     </div>
@@ -178,7 +182,7 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
             </li>
           ))}
         </ul>
-        <a class="button-link" href="/klub/">
+        <a class="button-link" {...getSiteLinkAttrs("/klub/")}>
           {homeCopy.timeline.cta}
         </a>
       </div>

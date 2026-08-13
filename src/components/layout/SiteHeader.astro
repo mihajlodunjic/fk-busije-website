@@ -4,6 +4,7 @@ import { business } from "@/data/business";
 import { globalCopy } from "@/data/copy";
 import { navigationItems } from "@/data/navigation";
 import { publicSocialLinks } from "@/data/social";
+import { getSiteLinkAttrs } from "@/utils/siteLinks";
 
 type Props = {
   currentPath: string;
@@ -29,7 +30,7 @@ const instagramAria = `${globalCopy.headerCta} (${globalCopy.externalLinkAriaLab
         {
           navigationItems.map((item) => (
             <li>
-              <a href={item.href} aria-current={currentPath === item.href ? "page" : undefined}>
+              <a {...getSiteLinkAttrs(item.href)} aria-current={currentPath === item.href ? "page" : undefined}>
                 {item.label}
               </a>
             </li>
@@ -73,7 +74,7 @@ const instagramAria = `${globalCopy.headerCta} (${globalCopy.externalLinkAriaLab
       {
         navigationItems.map((item) => (
           <li>
-            <a href={item.href} aria-current={currentPath === item.href ? "page" : undefined}>
+            <a {...getSiteLinkAttrs(item.href)} aria-current={currentPath === item.href ? "page" : undefined}>
               {item.label}
             </a>
           </li>
@@ -106,7 +107,7 @@ const instagramAria = `${globalCopy.headerCta} (${globalCopy.externalLinkAriaLab
     const toggleButton = header.querySelector("[data-menu-toggle]");
     const panel = document.querySelector("[data-mobile-panel]");
     const focusableSelector =
-      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+      'a[href], a[data-disabled-site-link="true"], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
     let restoreFocus = false;
 
     if (toggleButton && panel) {
@@ -164,7 +165,7 @@ const instagramAria = `${globalCopy.headerCta} (${globalCopy.externalLinkAriaLab
       }
     });
 
-    panel.querySelectorAll("a[href]").forEach((link) => {
+    panel.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => closeMenu({ focusTrigger: false }));
     });
 

@@ -4,6 +4,7 @@ import { business, currentYear } from "@/data/business";
 import { globalCopy } from "@/data/copy";
 import { navigationItems } from "@/data/navigation";
 import { publicSocialLinks } from "@/data/social";
+import { getSiteLinkAttrs } from "@/utils/siteLinks";
 ---
 
 <footer class="site-footer">
@@ -25,7 +26,7 @@ import { publicSocialLinks } from "@/data/social";
         {
           navigationItems.map((item) => (
             <li>
-              <a href={item.href}>{item.label}</a>
+              <a {...getSiteLinkAttrs(item.href)}>{item.label}</a>
             </li>
           ))
         }
