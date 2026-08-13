@@ -900,30 +900,24 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
 
   @media (max-width: 767px) {
     .home-hero {
-      height: min(660px, calc(100vh - var(--hero-header-offset)));
-      height: min(660px, calc(100svh - var(--hero-header-offset)));
-      max-height: 660px;
-    }
-
-    @supports (height: 100dvh) {
-      .home-hero {
-        height: min(660px, calc(100dvh - var(--hero-header-offset)));
-      }
+      height: auto;
+      max-height: none;
     }
 
     .home-hero-layout {
       grid-template-columns: 1fr;
-      grid-template-rows: minmax(0, 1fr) clamp(148px, 28svh, 210px);
+      grid-template-rows: auto clamp(188px, 26svh, 220px);
+      height: auto;
     }
 
     .hero-red-inner {
       grid-template-columns: 1fr;
       align-content: center;
-      gap: 14px;
+      gap: 20px;
       padding:
-        20px
+        34px
         18px
-        16px;
+        30px;
     }
 
     .home-hero h1 {
@@ -933,11 +927,11 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
 
     .hero-copy {
       max-width: none;
-      gap: 10px;
+      gap: 14px;
     }
 
     .hero-copy-top {
-      gap: 6px;
+      gap: 10px;
     }
 
     .hero-intro {
@@ -948,13 +942,13 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
 
     .hero-actions {
       align-items: flex-start;
-      gap: 10px 16px;
-      padding-top: 4px;
+      gap: 14px 16px;
+      padding-top: 6px;
     }
 
     :global(.hero-crest) {
-      --crest-size: min(58vw, 228px) !important;
-      max-width: 228px;
+      --crest-size: min(54vw, 204px) !important;
+      max-width: 204px;
     }
 
     .hero-crest-pane::before {
@@ -972,15 +966,15 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
     .hero-crest-wrap {
       width: 100%;
       padding:
+        20px
         18px
-        18px
-        14px;
+        18px;
     }
 
     .hero-marker {
       justify-content: flex-start;
       height: auto;
-      padding-block: 0 2px;
+      padding-block: 4px 0;
     }
 
     :global(.hero-local-marker) {
@@ -1050,102 +1044,43 @@ const recentResults = sortFinished(finishedMatches).slice(0, 4);
     }
   }
 
-  @media (max-width: 767px) and (max-height: 700px) {
-    .home-hero {
-      height: min(560px, calc(100vh - var(--hero-header-offset)));
-      height: min(560px, calc(100svh - var(--hero-header-offset)));
-      max-height: 560px;
-    }
-
-    @supports (height: 100dvh) {
-      .home-hero {
-        height: min(560px, calc(100dvh - var(--hero-header-offset)));
-      }
-    }
-
-    .home-hero-layout {
-      grid-template-rows: minmax(0, 1fr) clamp(140px, 26svh, 182px);
-    }
-
-    .hero-red-inner {
-      gap: 12px;
-      padding:
-        16px
-        16px
-        12px;
-    }
-
-    .hero-copy {
-      gap: 8px;
-    }
-
-    .home-hero h1 {
-      font-size: clamp(2.1rem, 10.8vw, 3.25rem);
-    }
-
-    .hero-intro {
-      font-size: 0.93rem;
-      line-height: 1.35;
-    }
-
-    .hero-actions {
-      gap: 8px 14px;
-    }
-
-    .hero-crest-wrap {
-      padding:
-        12px
-        14px
-        10px;
-    }
-
-    :global(.hero-crest) {
-      --crest-size: min(50vw, 188px) !important;
-      max-width: 188px;
-    }
-
-    .hero-mark-top {
-      width: min(132px, 36vw);
-    }
-  }
-
   @media (max-width: 380px) {
     .home-hero-layout {
-      grid-template-rows: minmax(0, 1fr) clamp(96px, 19svh, 126px);
+      grid-template-rows: auto clamp(180px, 24svh, 208px);
     }
 
     .hero-red-inner {
-      gap: 12px;
+      gap: 18px;
       padding:
-        18px
+        30px
         16px
-        12px;
+        26px;
     }
 
     .home-hero h1 {
       max-width: 7.1ch;
-      font-size: clamp(2.15rem, 10.9vw, 3.45rem);
+      font-size: clamp(2.25rem, 10.9vw, 3.55rem);
     }
 
     .hero-intro {
       font-size: 0.92rem;
-      line-height: 1.34;
+      line-height: 1.38;
     }
 
     .hero-actions {
-      gap: 8px 12px;
+      gap: 12px 12px;
     }
 
     :global(.hero-crest) {
-      --crest-size: min(38vw, 136px) !important;
-      max-width: 136px;
+      --crest-size: min(52vw, 184px) !important;
+      max-width: 184px;
     }
 
     .hero-crest-wrap {
       padding:
-        8px
-        10px
-        6px;
+        18px
+        14px
+        14px;
     }
   }
 </style>
